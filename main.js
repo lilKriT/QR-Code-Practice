@@ -20,6 +20,11 @@ const onGenerateSubmit = (e) => {
     setTimeout(() => {
       hideSpinner();
       generateQR(url);
+
+      setTimeout(() => {
+        const saveURL = qr.querySelector("img").src;
+        createSaveButton(saveURL);
+      }, 50);
     }, 1000);
   }
 };
@@ -46,6 +51,21 @@ hideSpinner();
 
 const clearUI = () => {
   qr.innerHTML = "";
+  const saveLink = document.querySelector("#save-link");
+  if (saveLink) {
+    saveLink.remove();
+  }
+};
+
+const createSaveButton = (saveurl) => {
+  const link = document.createElement("a");
+  link.id = "save-link";
+  link.classList =
+    "bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded w-1/3 m-auto my-5";
+  link.href = saveurl;
+  link.download = "qrcode";
+  link.innerText = "Save Image";
+  document.querySelector("#generated").appendChild(link);
 };
 
 form.addEventListener("submit", onGenerateSubmit);
