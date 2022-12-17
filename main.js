@@ -1,4 +1,5 @@
 import "./style.css";
+import * as QRCode from "qrcode";
 
 const form = document.querySelector("#generate-form");
 const qr = document.querySelector("#qrcode");
@@ -13,10 +14,27 @@ const onGenerateSubmit = (e) => {
     alert("Please enter a valid url");
   } else {
     showSpinner();
+    // console.log(url);
 
     setTimeout(() => {
       hideSpinner();
+
+      generateQR(url);
     }, 1000);
+  }
+};
+
+const generateQR = async (text) => {
+  try {
+    // console.log(await QRCode.toDataURL(text));
+    const code = await QRCode.toDataURL(text);
+    console.log(code);
+    // QRCode.toCanvas(qr, "abc", (err) => console.log(err));
+    const img = document.createElement("img");
+    img.src = code;
+    qr.appendChild(img);
+  } catch (err) {
+    console.error(err);
   }
 };
 
